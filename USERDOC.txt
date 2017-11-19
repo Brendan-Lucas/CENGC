@@ -1,3 +1,8 @@
-DelayedResponse is a supply and storage management solution API built around Python 3.6.  Users are able to input information about supply items as they arrive, including cost, volume, useful life, and name.  DelayedResponse monitors supply levels, issuing an SMS alert when items are about to expire, when storage is full, and when storage levels approach critically low values.
-The DelayedResponse API is designed to accept customer specific user interfaces, though it ships with a headless interface for evaluation.
-The headless client does not currently allow users to change the alert cell number at runtime due to the limitations of the SMS API used, but they can have their numbers authorized by a DelayedResponse representative before distribution.
+DelayedResponse is a supply and storage management solution API built around Python 3.6.  
+Users are able to input information about supply items as they arrive, including cost, volume, useful life, and name.  
+DelayedResponse monitors supply levels, issuing an SMS alert when items are about to expire, when storage is full, and when storage 
+levels approach critically low values.
+The DelayedResponse API is designed to accept customer specific user interfaces, though it ships with a headless interface for 
+evaluation.
+The headless client does not currently allow users to change the alert cell number at runtime due to the limitations of the SMS API 
+used, but they can have their numbers authorized by a DelayedResponse representative before distribution.
