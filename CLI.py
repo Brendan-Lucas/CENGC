@@ -1,5 +1,6 @@
 import Validations as validate
 import QueryScript
+from SMS import send_alert
 
 def get_name():
     while(True):
@@ -85,13 +86,17 @@ def do(action):
     elif action == "7":
         id = input("Item ID to get expiry date of: ")
         QueryScript.daysToExpire(id)
+    elif action == "8":
+        send_alert("SMS is working!")
+    elif action == "k":
+        kill_expired()
 
 def run():
     while(True):
         action = input("What would you like to do?\n 1. List all items\n 2. Search items by name\n 3. Total Cost\n 4. Add Item\n 5. Remove an Item\n 6. Get the storage status\n 7. Get the expiry status of an item\n 8. Test SMS\n 9. quit")
         if action == "9":
             break
-        elif action in ["1", "2", "3", "4", "5", "6", "8"]:
+        elif action in ["1", "2", "3", "4", "5", "6", "8", "k"]:
             do(action)
 
 run()

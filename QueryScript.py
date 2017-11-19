@@ -59,7 +59,11 @@ def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
         send_alert("ERROR: Item could not be added, Storage Full.")
 
 
-
+def kill_expired():
+    global jsonData
+    for item in jsonData:
+        if item["ExpirationDate"] < datetime.date.today:
+            remove_item(item["Name"])
 
 
 def dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, generatedID):
@@ -109,9 +113,12 @@ def storageStatus(filepath=DATABASEFILE):
     print ("Container is " + str(int(capacity*100))+ "% full!")
 
 def CostCalculation(name):
+    totalcost = 0
     with open(COSTFILE) as costJson:
         costData = json.load(costJson)
-    for item in costData
+    for item in costData:
+        totalcost += item["TotalCost"]
+    print("Total Cost: " + str(totalcost))
 
 def remainingStorage():
     file = open(DATABASEFILE, 'r')
