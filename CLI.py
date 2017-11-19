@@ -3,7 +3,7 @@ import QueryScript
 
 def get_name():
     while(True):
-        name = raw_input("Item Name: ")
+        name = input("Item Name: ")
         validation = validate.validate_name(name)
         if validation:
             print(validation)
@@ -53,7 +53,7 @@ def do(action):
     if action == "1":
         QueryScript.allItems()
     elif action == "2":
-        item_name = raw_input("Item name: ")
+        item_name = input("Item name: ")
         QueryScript.itemsWithName(item_name)
     elif action == "3":
         #total cost
@@ -67,7 +67,7 @@ def do(action):
         QueryScript.AddItem(name, volume, price, expiry_days)
     elif action == "5":
         while(True):
-            fieldnum = raw_input("What field would you like to search by?(1.Name, 2.volume, 3.ExpirationDate, 4.ID): ")
+            fieldnum = input("What field would you like to search by?(1.Name, 2.volume, 3.ExpirationDate, 4.ID): ")
             if fieldnum == "1":
                 field = "Name"
             elif fieldnum == "2":
@@ -78,17 +78,17 @@ def do(action):
                 field = "ID"
             else:
                 print("That is not a valid input")
-        value = raw_input("Item " + field + " for removal: ")
+        value = input("Item " + field + " for removal: ")
         QueryScript.remove_item(value, field)
     elif action == "6":
         QueryScript.storageStatus()
     elif action == "7":
-        id = raw_input("Item ID to get expiry date of: ")
+        id = input("Item ID to get expiry date of: ")
         QueryScript.daysToExpire(id)
 
 def run():
     while(True):
-        action = raw_input("What would you like to do?\n 1. List all items\n 2. Search items by name\n 3. Total Cost\n 4. Add Item\n 5. Remove an Item\n 6. Get the storage status\n 7. Get the expiry status of an item\n 8. Test SMS\n 9. quit")
+        action = input("What would you like to do?\n 1. List all items\n 2. Search items by name\n 3. Total Cost\n 4. Add Item\n 5. Remove an Item\n 6. Get the storage status\n 7. Get the expiry status of an item\n 8. Test SMS\n 9. quit")
         if action == "9":
             break
         elif action in ["1", "2", "3", "4", "5", "6", "8"]:
