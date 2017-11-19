@@ -6,3 +6,11 @@ The DelayedResponse API is designed to accept customer specific user interfaces,
 evaluation.
 The headless client does not currently allow users to change the alert cell number at runtime due to the limitations of the SMS API 
 used, but they can have their numbers authorized by a DelayedResponse representative before distribution.
+On running the DelayedResponse headless client, users are presented with a command line based interface to the API.
+This allows users to insert items into and remove items from storage, view the items in storage, view storage and cost information,
+and view information about items in storage.
+
+Installation:
+
+
+User Interface:
