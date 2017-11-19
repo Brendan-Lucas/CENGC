@@ -40,7 +40,7 @@ def get_expiration():
         else:
             return days
 
-def expiration_days_to_date(days):
+def expiration_days_tpatho_date(days):
     today = datetime.date.today()
     timedelta = datetime.timedelta(days=days)
     expiration_date = today + timedelta
@@ -73,3 +73,5 @@ def get_item_from_user(current_volume):
     item["expiry_date"] = expiration_days_to_date(expiration_days)
     item["date_added"] = datetime.date.today()
     return item
+
+print get_item_from_user(40000)

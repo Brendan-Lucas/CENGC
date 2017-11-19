@@ -52,5 +52,3 @@ def build_item(name, volume, price, expiration_days, current_volume):
     item["date_added"] = datetime.date.today()
 
     return item
-
-print (build_item("five", -1, -1, -1, 40000))

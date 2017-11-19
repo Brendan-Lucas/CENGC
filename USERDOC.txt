@@ -11,9 +11,7 @@ This allows users to insert items into and remove items from storage, view the i
 and view information about items in storage.
 
 Installation:
-
-
-User Interface:
+Install the twilio with pip install twilio.
 
 API Reference:
 AddItem(name, volume, price, daysToExpiration) -> Adds an item with the specified information.
