@@ -1,8 +1,10 @@
 import json
 import uuid
+from SMS import send_alert, expiry_alert
 import BuildItem
 
-runStartup = False;
+
+runStartup = True;
 
 CAPACITY = 80000
 DATABASEFILE = 'Store.json'
@@ -10,15 +12,14 @@ gStorage = {}
 gItems = {}
 
 """QUERY: AddItem"""
-
 def AddItem(name, volume, price, daysToExpiration):
     item = BuildItem.build_item(name, volume, price, daysToExpiration)
     if not item["errors"]:
         CreateItem(item["name"], item["volume"], item["price_before_tax"], item["price_after_tax"], item["expiration_date"], item["date_added"])
     else:
-        print "Add item was not completed"
+        print("Add item was not completed")
         for error in item["errors"]:
-            print error
+            print (error)
 
 def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
 
@@ -28,14 +29,23 @@ def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
     with open(DATABASEFILE) as jsonFile:
         jsonData = json.load(json.dumps(jsonFile))
 
+
     gItems = jsonData["Items"]
     gStorage = jsonData["Storage"]
-    gItems.append(dict)
-    gStorage["Remaining"] -= volume
+    if gStorage["Remaining"] >= volume :
 
-    jsonData = {"Items": gItems, "Storage": gStorage}
-    with open(DATABASEFILE, 'w') as jsonFile:
-        json.dump(jsonData, jsonFile)
+        gItems.append(dict)
+        gStorage["Remaining"] -= volume
+
+        jsonData = {"Items": gItems, "Storage": gStorage}
+        with open(DATABASEFILE, 'w') as jsonFile:
+            json.dump(jsonData, jsonFile)
+
+    else :
+        print("ERROR: Item could not be added, Storage Full.")
+        send_alert("ERROR: Item could not be added, Storage Full.")
+
+
 
 
 
@@ -43,10 +53,22 @@ def dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, gene
     return {"Name" : name, "volume" : volume, "ExpirationDate" : expirationDate, "PriceBTX" : priceBTX, "PriceATX" : PriceATX, "DateAdded" : dateAdded, "ID" : generatedID}
 
 """QUERY: Remove Items by name"""
+#TODO: make faster with sorting by name and binary search for name then remove
+def remove_item(itemValue, spec="Name"):
+    gItems[:] = [item for item in gItems if itemSpecEqual(item, itemValue, spec)]
+    jsonData = {"Items": gItems, "Storage": gStorage}
+    with open(DATABASEFILE, 'w') as jsonFile:
+        json.dump(jsonData, jsonFile)
+
+def itemSpecEqual(item, value, spec):
+    if item[spec] != value:
+        return item
+    else:
+        gStorage["Remaining"] += item["Volume"]
 
 
 """QUERY: Items With Name"""
-def itemsWithName(name, filepath):
+def itemsWithName(name, filepath=DATABASEFILE):
     file = open(filepath, 'r')
     JSON =file.read()
     file.close()
@@ -56,7 +78,7 @@ def itemsWithName(name, filepath):
             print (item)
 
 """"QUERY: All Items"""
-def allItems(filepath):
+def allItems(filepath=DATABASEFILE):
     file = open(filepath, 'r')
     JSON = file.read()
     file.close()
@@ -65,7 +87,7 @@ def allItems(filepath):
        print(item)
 
 """ QUERY: Storage Status """
-def storageStatus(filepath):
+def storageStatus(filepath=DATABASEFILE):
     file = open(filepath, 'r')
     JSON = file.read()
     file.close()
@@ -85,4 +107,15 @@ if runStartup:
 
     with open(DATABASEFILE, 'w') as file:
         json.dump(Starting_List, file)
+
+    
+
+jsonData = {}
+with open(DATABASEFILE) as jsonFile:
+    jsonData = json.load(jsonFile)
+
+gItems = jsonData["Items"]
+gStorage = jsonData["Storage"]
+
+remove_item(123456, "ID")
 
