@@ -13,7 +13,8 @@ def validate_length(input, maxlength):
     else:
         return False
 
-def validate_magnitude(input, min=-1, max=-1):
+def validate_magnitude(inp, min=-1, max=-1):
+    input = int(inp)
     if min>=0 and input < min:
         return True
     elif max>=0 and input > max:

@@ -1,6 +1,6 @@
 import Validations as validate
 import QueryScript
-from SMS import send_alert
+import SMS
 
 def get_name():
     while(True):
@@ -18,7 +18,7 @@ def get_volume(remaining_storage):
         if validation:
             print(validation)
         else:
-            return volume
+            return int(volume)
 
 def get_price():
     while (True):
@@ -27,7 +27,7 @@ def get_price():
         if validation:
             print(validation)
         else:
-            return price
+            return int(price)
 
 def get_expiration():
     while (True):
@@ -36,7 +36,7 @@ def get_expiration():
         if validation:
             print(validation)
         else:
-            return days
+            return int(days)
 
 def expiration_days_to_date(days):
     today = datetime.date.today()
