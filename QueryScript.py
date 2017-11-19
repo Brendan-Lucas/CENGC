@@ -1,6 +1,8 @@
 import json
 import uuid
 from SMS import send_alert, expiry_alert
+import BuildItem
+
 
 runStartup = True;
 
@@ -10,14 +12,22 @@ gStorage = {}
 gItems = {}
 
 """QUERY: AddItem"""
-def add_item(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
+def AddItem(name, volume, price, daysToExpiration):
+    item = BuildItem.build_item(name, volume, price, daysToExpiration)
+    if not item["errors"]:
+        CreateItem(item["name"], item["volume"], item["price_before_tax"], item["price_after_tax"], item["expiration_date"], item["date_added"])
+    else:
+        print("Add item was not completed")
+        for error in item["errors"]:
+            print (error)
+
+def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
 
     generatedID = uuid.UUID().int()
     dict = dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, generatedID)
     jsonData = {}
     with open(DATABASEFILE) as jsonFile:
         jsonData = json.load(json.dumps(jsonFile))
-
 
 
     gItems = jsonData["Items"]
@@ -108,3 +118,4 @@ gItems = jsonData["Items"]
 gStorage = jsonData["Storage"]
 
 remove_item(123456, "ID")
+
