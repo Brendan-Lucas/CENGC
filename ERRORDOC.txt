@@ -1,1 +1,2 @@
-There are currently no known errors in DelayedResponse.
+These are the currently known errors in DelayedResponse.
+Method addItems does not work as the objects are datetime objects and cannot be serialized.
