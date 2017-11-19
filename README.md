@@ -4,6 +4,7 @@ Run with python3
 
 For CLI:
 `python3 CLI.py`
+
 For API: 
 ```
 python3
