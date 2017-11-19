@@ -7,32 +7,32 @@ def validate_numericality(input):
     except ValueError:
         return True
 
-
 def validate_length(input, maxlength):
     if len(input) > maxlength:
         return True
     else:
         return False
 
-def validate_magnitude(input, min=None, max=None):
-    if not min or input < min:
+def validate_magnitude(input, min=-1, max=-1):
+    if min>=0 and input < min:
         return True
-    elif not max or input > max:
+    elif max>=0 and input > max:
         return True
     else:
         return False
 
 def validate_empty(input):
-    if len(input) == 0:
+    if len(str(input)) == 0:
         return True
     else:
         return False
 
 # Name
 def validate_name(name):
-    if validate_empty(name):
+    string_name = str(name)
+    if validate_empty(string_name):
         return "Name cannot be empty"
-    if validate_length(name, 100):
+    if validate_length(string_name, 100):
         return "Name must be less than 100 characters"
     else:
         return False

@@ -1,6 +1,6 @@
 import json
 import uuid
-from SMS import send_alert, expiry_alert
+#from SMS import send_alert, expiry_alert
 import BuildItem
 import datetime
 
@@ -13,9 +13,9 @@ gItems = {}
 
 """QUERY: AddItem"""
 def AddItem(name, volume, price, daysToExpiration):
-    item = BuildItem.build_item(name, volume, price, daysToExpiration)
+    item = BuildItem.build_item(name, volume, price, daysToExpiration, remainingStorage())
     if not item["errors"]:
-        CreateItem(item["name"], item["volume"], item["price_before_tax"], item["price_after_tax"], item["expiration_date"], item["date_added"])
+        CreateItem(item["name"], item["volume"], item["price_before_tax"], item["price_after_tax"], item["expiry_date"], item["date_added"])
     else:
         print("Add item was not completed")
         for error in item["errors"]:
@@ -23,11 +23,11 @@ def AddItem(name, volume, price, daysToExpiration):
 
 def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
 
-    generatedID = uuid.UUID().int()
+    generatedID = uuid.uuid4()
     dict = dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, generatedID)
     jsonData = {}
     with open(DATABASEFILE) as jsonFile:
-        jsonData = json.load(json.dumps(jsonFile))
+        jsonData = json.load(jsonFile)
 
 
     gItems = jsonData["Items"]
@@ -113,6 +113,13 @@ def CostCalculation(name):
         costData = json.load(costJson)
     for item in costData
 
+def remainingStorage():
+    file = open(DATABASEFILE, 'r')
+    JSON = file.read()
+    file.close()
+    d = json.loads(JSON)
+    return d["Storage"]["Remaining"]
+
 if runStartup:
     preVolume = 200
     #populate json file with some Items before we do add anything.
@@ -132,6 +139,7 @@ with open(DATABASEFILE) as jsonFile:
 
 gItems = jsonData["Items"]
 gStorage = jsonData["Storage"]
+AddItem("1", 2, 3, 4)
 
 remove_item(123456, "ID")
 
