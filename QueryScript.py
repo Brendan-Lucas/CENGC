@@ -1,9 +1,10 @@
+
+#from bson import json_util
 import json
 import uuid
-#from SMS import send_alert, expiry_alert
+from SMS import send_alert, expiry_alert
 import BuildItem
-import datetime
-
+from datetime import date, datetime
 runStartup = True;
 COSTFILE = 'Costs.json'
 CAPACITY = 80000
@@ -24,6 +25,7 @@ def AddItem(name, volume, price, daysToExpiration):
 def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
 
     generatedID = uuid.uuid4()
+    generatedID = generatedID.hex
     dict = dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, generatedID)
     jsonData = {}
     with open(DATABASEFILE) as jsonFile:
@@ -39,21 +41,21 @@ def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
 
         jsonData = {"Items": gItems, "Storage": gStorage}
         with open(DATABASEFILE, 'w') as jsonFile:
-            json.dump(jsonData, jsonFile)
+            json.dump(jsonData, jsonFile) #default=json_serial)
 
-        with open(COSTFILE, 'w') as costJson:
+        """with open(COSTFILE, 'w') as costJson:
 
             costData = json.load(costJson)
             if name in costData:
                 costData[name]["TotalCost"] += priceATX
-                if datetime.date.today in costData[name]:
-                    costData[datetime.date.today] += priceATX
+                if datetime.date.today() in costData[name]:
+                    costData[datetime.date.today()] += priceATX
                 else:
-                    costData[name][datetime.date.today] = priceATX
+                    costData[name][datetime.date.today()] = priceATX
             else:
-                costData[name] = {"TotalCost": priceATX, datetime.date.today: priceATX}
+                costData[name] = {"TotalCost": priceATX, datetime.date.today(): priceATX}
 
-            json.dump(costData, costJson)
+            json.dump(costData, costJson)"""
     else :
         print("ERROR: Item could not be added, Storage Full.")
         send_alert("ERROR: Item could not be added, Storage Full.")
@@ -63,7 +65,7 @@ def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
 
 
 def dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, generatedID):
-    return {"Name" : name, "volume" : volume, "ExpirationDate" : expirationDate, "PriceBTX" : priceBTX, "PriceATX" : PriceATX, "DateAdded" : dateAdded, "ID" : generatedID}
+    return {"Name" : name, "volume" : volume, "ExpirationDate" : expirationDate.isoformat(), "PriceBTX" : priceBTX, "PriceATX" : PriceATX, "DateAdded" : dateAdded.isoformat(), "ID" : generatedID}
 
 """QUERY: Remove Items by name"""
 #TODO: make faster with sorting by name and binary search for name then remove
@@ -108,10 +110,6 @@ def storageStatus(filepath=DATABASEFILE):
     capacity =(d["Storage"]["Size"]-d["Storage"]["Remaining"])/d["Storage"]["Size"]
     print ("Container is " + str(int(capacity*100))+ "% full!")
 
-def CostCalculation(name):
-    with open(COSTFILE) as costJson:
-        costData = json.load(costJson)
-    for item in costData
 
 def remainingStorage():
     file = open(DATABASEFILE, 'r')
@@ -119,6 +117,14 @@ def remainingStorage():
     file.close()
     d = json.loads(JSON)
     return d["Storage"]["Remaining"]
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    raise TypeError ("Type %s not serializable" % type(obj))
+
 
 if runStartup:
     preVolume = 200
@@ -131,8 +137,10 @@ if runStartup:
     with open(DATABASEFILE, 'w') as file:
         json.dump(Starting_List, file)
 
-    
-
+    """with open(COSTFILE, 'w') as file:
+        jList = {"Item1" : {"totalCost" : 123, str(datetime.date.today()): 123}}
+        json.dump(jList, file)
+""""""
 jsonData = {}
 with open(DATABASEFILE) as jsonFile:
     jsonData = json.load(jsonFile)
@@ -142,4 +150,4 @@ gStorage = jsonData["Storage"]
 AddItem("1", 2, 3, 4)
 
 remove_item(123456, "ID")
-
+"""
