@@ -2,10 +2,10 @@ import json
 import uuid
 #from SMS import send_alert, expiry_alert
 import BuildItem
-
+import datetime
 
 runStartup = True;
-
+COSTFILE = 'Costs.json'
 CAPACITY = 80000
 DATABASEFILE = 'Store.json'
 gStorage = {}
@@ -41,6 +41,19 @@ def CreateItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
         with open(DATABASEFILE, 'w') as jsonFile:
             json.dump(jsonData, jsonFile)
 
+        with open(COSTFILE, 'w') as costJson:
+
+            costData = json.load(costJson)
+            if name in costData:
+                costData[name]["TotalCost"] += priceATX
+                if datetime.date.today in costData[name]:
+                    costData[datetime.date.today] += priceATX
+                else:
+                    costData[name][datetime.date.today] = priceATX
+            else:
+                costData[name] = {"TotalCost": priceATX, datetime.date.today: priceATX}
+
+            json.dump(costData, costJson)
     else :
         print("ERROR: Item could not be added, Storage Full.")
         send_alert("ERROR: Item could not be added, Storage Full.")
@@ -95,13 +108,17 @@ def storageStatus(filepath=DATABASEFILE):
     capacity =(d["Storage"]["Size"]-d["Storage"]["Remaining"])/d["Storage"]["Size"]
     print ("Container is " + str(int(capacity*100))+ "% full!")
 
+def CostCalculation(name):
+    with open(COSTFILE) as costJson:
+        costData = json.load(costJson)
+    for item in costData
+
 def remainingStorage():
     file = open(DATABASEFILE, 'r')
     JSON = file.read()
     file.close()
     d = json.loads(JSON)
     return d["Storage"]["Remaining"]
-
 
 if runStartup:
     preVolume = 200
