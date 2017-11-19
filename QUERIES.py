@@ -26,8 +26,4 @@ def storageStatus(filepath):
     capacity =(d["Storage"]["Size"]-d["Storage"]["Remaining"])/d["Storage"]["Size"]
     print ("Container is " + str(int(capacity*100))+ "% full!")
 
-itemsWithName("Apples", "C:/Users/rp4k/Desktop/example_1.json")
-
-allItems("C:/Users/rp4k/Desktop/example_1.json")
-storageStatus("C:/Users/rp4k/Desktop/example_1.json")
 
