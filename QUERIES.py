@@ -27,13 +27,13 @@ def storageStatus(filepath):
     print ("Container is " + str(int(capacity*100))+ "% full!")
 
 
-def daysToExpiry(filepath, name):
+def daysToExpiry(filepath, ID):
     file = open(filepath, 'r')
     JSON = file.read()
     file.close()
     d = json.loads(JSON)
     for item in d["Items"]:
-        if item["Name"] == name:
+        if item["ID"] == ID:
             daystillexp=item["ExpirationDate"]
             year = int((item["DateAdded"])[0:4])
             month=int((item["DateAdded"])[5:7])
@@ -48,5 +48,4 @@ def daysToExpiry(filepath, name):
                     month=month%13
             daysleft =(year-datetime.datetime.now().year)*365 +(month-datetime.datetime.now().month)*12 +(day-datetime.datetime.now().day)
 
-            return daysleft
-
+            print ("Item "+str (item["Name"]) + " with ID "+ str(ID) + " will expire in "+str(daysleft)+ " days.")
