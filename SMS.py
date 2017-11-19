@@ -13,15 +13,13 @@ send_from = "+13069921405"
 twilio_client = Client(twilio_sid, twilio_authcode)
 
 def expiry_alert(item, storage):
-	message = twilio_client.messages.create(send_to, 
-											body = EXPIRY_MESSAGE % (item["Name"], item["ID"], item["Expiry"], storage), 
-											from_ = send_from)
-	
-	request = Request(api_address, message)
+	send_alert(EXPIRY_MESSAGE % (item["Name"], item["ID"], item["Expiry"], storage))
 
 def storage_alert(percentage):
+	send_alert(STORAGE_MESSAGE % percentage)
+
+def send_alert(message_body):
 	message = twilio_client.messages.create(send_to,
-											body = STORAGE_MESSAGE % percentage,
+											body = message_body,
 											from_ = send_from)
-	
 	request = Request(api_address, message)
