@@ -13,7 +13,7 @@ gItems = {}
 
 """QUERY: AddItem"""
 def AddItem(name, volume, price, daysToExpiration):
-    item = BuildItem.build_item(name, volume, price, daysToExpiration)
+    item = BuildItem.build_item(name, volume, price, daysToExpiration, remainingStorage())
     if not item["errors"]:
         CreateItem(item["name"], item["volume"], item["price_before_tax"], item["price_after_tax"], item["expiration_date"], item["date_added"])
     else:
@@ -95,6 +95,12 @@ def storageStatus(filepath=DATABASEFILE):
     capacity =(d["Storage"]["Size"]-d["Storage"]["Remaining"])/d["Storage"]["Size"]
     print ("Container is " + str(int(capacity*100))+ "% full!")
 
+def remainingStorage():
+    file = open(DATABASEFILE, 'r')
+    JSON = file.read()
+    file.close()
+    d = json.loads(JSON)
+    return d["Storage"]["Remaining"]
 
 
 if runStartup:
