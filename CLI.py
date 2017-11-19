@@ -50,6 +50,13 @@ def apply_tax(price):
 def remaining_storage(current_volume):
     return MAX_VOLUME - current_volume
 
+def test_sms():
+    SMS.storage_alert(65)
+    item = {"Name": "Potatoes",
+            "ID": 1234567,
+            "Expiry": 2017-11-19}
+    SMS.expiry_alert(item, 80)
+
 def do(action):
     if action == "1":
         QueryScript.allItems()
@@ -71,12 +78,16 @@ def do(action):
             fieldnum = input("What field would you like to search by?(1.Name, 2.volume, 3.ExpirationDate, 4.ID): ")
             if fieldnum == "1":
                 field = "Name"
+                break
             elif fieldnum == "2":
                 field = "volume"
+                break
             elif fieldnum == "3":
                 field = "ExpirationDate"
+                break
             elif fieldnum == "4":
                 field = "ID"
+                break
             else:
                 print("That is not a valid input")
         value = input("Item " + field + " for removal: ")
@@ -87,7 +98,7 @@ def do(action):
         id = input("Item ID to get expiry date of: ")
         QueryScript.daysToExpire(id)
     elif action == "8":
-        send_alert("SMS is working!")
+        test_sms()
     elif action == "k":
         kill_expired()
 

@@ -135,7 +135,7 @@ if runStartup:
     print("Starting_List: ", repr(Starting_List))
     print("JSON: ", json.dumps(Starting_List))
 
-    with open(DATABASEFILE, 'w') as file:
+    with open(DATABASEFILE, 'w') as  file:
         json.dump(Starting_List, file)
 
     
@@ -146,7 +146,6 @@ with open(DATABASEFILE) as jsonFile:
 
 gItems = jsonData["Items"]
 gStorage = jsonData["Storage"]
-AddItem("1", 2, 3, 4)
 
 remove_item(123456, "ID")
 
