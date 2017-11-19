@@ -14,3 +14,10 @@ Installation:
 
 
 User Interface:
+
+API Reference:
+AddItem(name, volume, price, daysToExpiration) -> Adds an item with the specified information.
+itemsWithName(name, filepath) -> Outputs all items with the provided name.
+remove_item(itemValue) -> Removes the specified item from storage.
+allItems(filepath=DATABASEFILE) -> Lists all items stored in the specified file.
+storageStatus(filepath=DATABASEFILE) -> Outputs the percentage full of the storage unit.
