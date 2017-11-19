@@ -1,4 +1,5 @@
 import json
+import uuid
 
 runStartup = False;
 
@@ -10,7 +11,8 @@ gItems = {}
 """QUERY: AddItem"""
 def AddItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
 
-    dict = dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded)
+    generatedID = uuid.UUID().int()
+    dict = dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, generatedID)
     jsonData = {}
     with open(DATABASEFILE) as jsonFile:
         jsonData = json.load(json.dumps(jsonFile))
@@ -26,8 +28,11 @@ def AddItem(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
 
 
 
-def dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded):
-    return {"Name" : name, "volume" : volume, "ExpirationDate" : expirationDate, "PriceBTX" : priceBTX, "PriceATX" : PriceATX, "DateAdded" : dateAdded}
+def dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, generatedID):
+    return {"Name" : name, "volume" : volume, "ExpirationDate" : expirationDate, "PriceBTX" : priceBTX, "PriceATX" : PriceATX, "DateAdded" : dateAdded, "ID" : generatedID}
+
+"""QUERY: Remove Items by name"""
+
 
 """QUERY: Items With Name"""
 def itemsWithName(name, filepath):
@@ -63,7 +68,7 @@ if runStartup:
     preVolume = 200
     #populate json file with some Items before we do add anything.
     PriceATX = 23* 1.23
-    Starting_List = {"Items":[{"Name" : "Apples", "ExpirationDate" : "2017-04-14", "PriceBTX" : preVolume, "PriceATX" : PriceATX, "DateAdded" : "2017-11-18", "Volume" : "14"}], "Storage" : { "Size" : CAPACITY, "Remaining" : CAPACITY - preVolume} }
+    Starting_List = {"Items":[{"Name": "Apples", "ExpirationDate": "2017-04-14", "PriceBTX": 23, "PriceATX": PriceATX, "DateAdded" : "2017-11-18", "Volume": preVolume, "ID": 123456}], "Storage" : { "Size" : CAPACITY, "Remaining" : CAPACITY - preVolume} }
     print("Starting_List: ", repr(Starting_List))
     print("JSON: ", json.dumps(Starting_List))
 
