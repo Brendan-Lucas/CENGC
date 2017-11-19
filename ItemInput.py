@@ -9,7 +9,7 @@ def get_name():
         name = raw_input("Item Name: ")
         validation = validate.validate_name(name)
         if validation:
-            print validation
+            print (validation)
         else:
             return name
 
@@ -18,7 +18,7 @@ def get_volume(remaining_storage):
         volume = input("Container volume: ")
         validation = validate.validate_volume(volume, remaining_storage)
         if validation:
-            print validation
+            print (validation)
         else:
             return volume
 
@@ -36,7 +36,7 @@ def get_expiration():
         days = input("Number of days until item expires: ")
         validation = validate.validate_expiration(days)
         if validation:
-            print validation
+            print (validation)
         else:
             return days
 
