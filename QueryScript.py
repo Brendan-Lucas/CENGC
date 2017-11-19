@@ -5,6 +5,7 @@ import uuid
 from SMS import send_alert, expiry_alert
 import BuildItem
 from datetime import date, datetime
+
 runStartup = True;
 COSTFILE = 'Costs.json'
 CAPACITY = 80000
@@ -74,12 +75,28 @@ def dict_maker(name, volume, priceBTX, priceATX, expirationDate, dateAdded, gene
 """QUERY: Remove Items by name"""
 #TODO: make faster with sorting by name and binary search for name then remove
 def remove_item(itemValue, spec="Name"):
-    gItems[:] = [item for item in gItems if itemSpecEqual(item, itemValue, spec)]
+    #gItems[:] = [item for item in gItems if itemSpecEqual(item, itemValue, spec)]
+    global gStorage, gItems
+
+    with open(DATABASEFILE) as jsonFile:
+        jsonData = json.load(jsonFile)
+
+    gItems = jsonData["Items"]
+    gStorage = jsonData["Storage"]
+
+    newList = []
+    for i in range(len(gItems)):
+        toAppend = itemSpecEqual(gItems[i], itemValue, spec)
+        if toAppend!= None:
+            newList.append(toAppend)
+    gItems = newList
+
     jsonData = {"Items": gItems, "Storage": gStorage}
     with open(DATABASEFILE, 'w') as jsonFile:
         json.dump(jsonData, jsonFile)
 
 def itemSpecEqual(item, value, spec):
+    global gStorage
     if item[spec] != value:
         return item
     else:
@@ -146,7 +163,7 @@ if runStartup:
     Starting_List = {"Items":[{"Name": "Apples", "ExpirationDate": "2017-04-14", "PriceBTX": 23, "PriceATX": PriceATX, "DateAdded" : "2017-11-18", "Volume": preVolume, "ID": 123456}], "Storage" : { "Size" : CAPACITY, "Remaining" : CAPACITY - preVolume} }
     print("Starting_List: ", repr(Starting_List))
     print("JSON: ", json.dumps(Starting_List))
-
+    print(Starting_List["Storage"])
     with open(DATABASEFILE, 'w') as  file:
         json.dump(Starting_List, file)
 
@@ -160,6 +177,5 @@ with open(DATABASEFILE) as jsonFile:
 
 gItems = jsonData["Items"]
 gStorage = jsonData["Storage"]
-
+"""""
 remove_item(123456, "ID")
-"""

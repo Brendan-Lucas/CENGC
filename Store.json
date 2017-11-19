@@ -1,2 +1,1 @@
-
-{"Items": [{"Name": "Apples", "ExpirationDate": "2017-04-14", "PriceBTX": 23, "PriceATX": 28.29, "DateAdded": "2017-11-18", "Volume": 200, "ID": 123456}]}
+{"Items": [], "Storage": {"Size": 80000, "Remaining": 80000}}
